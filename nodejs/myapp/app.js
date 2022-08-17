@@ -3,24 +3,26 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var DB = require('../myapp/file');
+var DB = require('../myapp/dataManager');
+
+var DBpath = __dirname + '/DB.json';
 
 var port = 1234;
 var app = express();
-
-// DB.txt는 JSON 형태로 저장되어있음
-// JSON.parse로 파싱해줘야함
-let unFilteredData = DB.loadUsers(); // JSON type
 let users;
-if(unFilteredData === undefined){
-  users = [];
-}
-else{
-  users = JSON.parse(unFilteredData); 
-}
-let userCounter = 100;
+let userCounter;
 
-function getUserCounter(increment) { 
+DB.loadUsers(DBpath).then((file,err) =>{
+  if(file.length == 0){ // 아무것도 없을때
+    users = Array();
+  } else{ // 존재한다면 convert JSON file to string
+    users = file;
+  }
+  userCounter = users.length;
+});
+
+
+function getUserCounter(increment=0) { 
   userCounter += increment;
   return userCounter;
 };
@@ -31,6 +33,7 @@ module.exports = {getUserCounter, getUsers, pushUser };
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const { stringify } = require('querystring');
 
 // Run Server
 app.listen(port, () => {

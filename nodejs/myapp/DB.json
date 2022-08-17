@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "name": "lim",
+        "region": "japan"
+    },
+    {
+        "id": 2,
+        "name": "kim",
+        "region": "korea"
+    },
+    {
+        "id": 3,
+        "name": "choi",
+        "region": "usa"
+    }
+]

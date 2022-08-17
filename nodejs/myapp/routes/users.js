@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var app = require('../app');
-var DB = require('../file');
+var DB = require('../DB.json');
 
 let users = app.getUsers();
 /* GET users listing. */
@@ -42,7 +42,6 @@ router.post('/', (req, res) => {
   }
   console.log(data);
   app.pushUser(data);
-  DB.saveUsers(app.getUsers());
   res.send(data);
 });
 
