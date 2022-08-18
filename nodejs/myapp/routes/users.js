@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var app = require('../app');
-var DB = require('../DB.json');
+var dm = require('../dataManager');
+
+var DBpath = 'C:\\Users\\asas9\\OneDrive\\바탕 화면\\HTML\\nodejs\\myapp\\DB.json';
 
 let users = app.getUsers();
 /* GET users listing. */

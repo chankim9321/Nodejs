@@ -7,18 +7,24 @@ function loadUsers(path) {  // 프로미스 객체 반환
             if(err){
                 reject(err);
             } else{
-                resolve(JSON.parse(file));
+                resolve(file);
             }
         });
     });
 };
 
-function saveUsers(users) {
-    let jsonData = JSON.stringify(users,null,4);
-    fs.writeFile(__dirname + '/DB.json', jsonData, (err) => {
-        if(err) throw err;
-        console.log("Users가 성공적으로 저장되었습니다.")
-    });
+function saveUsers(path, data) {
+    data = JSON.stringify(data,null,4);
+    return new Promise((resolve, reject) => {
+        fs.writeFile(path, data, (err) => {
+            if(err){
+                console.log('Data 저장에 실패했습니다.');
+            }
+            else{
+                resolve();
+            }
+        })
+    })
 };
 
 module.exports = {loadUsers, saveUsers};

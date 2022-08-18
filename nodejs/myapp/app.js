@@ -9,16 +9,19 @@ var DBpath = __dirname + '/DB.json';
 
 var port = 1234;
 var app = express();
+
 let users;
 let userCounter;
 
 DB.loadUsers(DBpath).then((file,err) =>{
-  if(file.length == 0){ // 아무것도 없을때
+  if(file.length == 0 || file == undefined){ // 아무것도 없을때
     users = Array();
   } else{ // 존재한다면 convert JSON file to string
-    users = file;
+    users = JSON.parse(file);
   }
   userCounter = users.length;
+  console.log('- LOAD DATA -');
+  console.log(getUsers());
 });
 
 
@@ -33,7 +36,15 @@ module.exports = {getUserCounter, getUsers, pushUser };
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-const { stringify } = require('querystring');
+
+process.once('SIGINT', () => {
+  console.log('SIGTERM signal received: closing HTTP server');
+  console.log('Data saving..');
+  DB.saveUsers(DBpath,getUsers()).then(()=>{
+    console.log('SERVER CLOSED!');
+    process.exit();
+  })
+});
 
 // Run Server
 app.listen(port, () => {
