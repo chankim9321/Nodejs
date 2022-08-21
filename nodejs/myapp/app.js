@@ -10,45 +10,53 @@ var DBpath = __dirname + '/DB.json';
 var port = 1234;
 var app = express();
 
-let users;
-let userCounter;
-
-DB.loadUsers(DBpath).then((file,err) =>{
-  if(file.length == 0 || file == undefined){ // 아무것도 없을때
-    users = Array();
-  } else{ // 존재한다면 convert JSON file to string
-    users = JSON.parse(file);
-  }
-  userCounter = users.length;
-  console.log('- LOAD DATA -');
-  console.log(getUsers());
-});
-
+let users = [];
+let userCounter = 0;
 
 function getUserCounter(increment=0) { 
   userCounter += increment;
   return userCounter;
 };
-function getUsers() { return users;};
-function pushUser(user) { users.push(user)};
+function getUsers() { 
+  return users;
+};
+function pushUser(user) {
+   users.push(user)
+};
 
 module.exports = {getUserCounter, getUsers, pushUser };
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-process.once('SIGINT', () => {
+// ctrl + c (인터럽트) 발생시 데이터 저장후 종료
+process.once('SIGINT', () => { 
   console.log('SIGTERM signal received: closing HTTP server');
   console.log('Data saving..');
-  DB.saveUsers(DBpath,getUsers()).then(()=>{
-    console.log('SERVER CLOSED!');
-    process.exit();
-  })
+  DB.saveUsers(DBpath,getUsers()); // sync
+  console.log('SERVER CLOSED!');
+  process.exit();
 });
 
-// Run Server
+// Run Server ( Run listener )
 app.listen(port, () => {
-  console.log(`Server running at http://127.0.0.1:${port}`);
+  console.log(' INITIALIZING SERVER..');
+  console.log('- Data Loading... -');
+  DB.loadUsers(DBpath).then((file,err) =>{
+    if(file.length == 0 || file == undefined){ 
+      users = Array();
+    } else if(err){
+      console.log('loading Failed!');
+      users = Array();
+    } else{ 
+      users = JSON.parse(file);
+    }
+  }).then(() => {
+    console.log(getUsers());
+    userCounter = users.length;
+    console.log('- Data Loading Success! -');
+    console.log(`Server running at http://127.0.0.1:${port}`);
+  });
 });
 
 // view engine setup

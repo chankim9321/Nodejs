@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   const id = req.params.id;
   // data searching
-  const filtered = users.filter((user) => user.id == id);
+  const filtered = app.getUsers().filter((user) => user.id == id);
   if(filtered.length > 0){ 
       res.send(filtered[0]);
   }
