@@ -1,22 +1,7 @@
 [
     {
-        "id": 1,
-        "name": "lim",
-        "region": "japan"
-    },
-    {
-        "id": 2,
-        "name": "kim",
-        "region": "korea"
-    },
-    {
-        "id": 3,
-        "name": "kim2",
-        "region": "korea2"
-    },
-    {
-        "id": 4,
-        "name": "kim3",
-        "region": "korea3"
+        "name": "김병찬",
+        "id": "byoungchan9321",
+        "password": "1q2w3e4r!"
     }
 ]

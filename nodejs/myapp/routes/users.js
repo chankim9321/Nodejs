@@ -8,8 +8,7 @@ var DBpath = 'C:\\Users\\asas9\\OneDrive\\바탕 화면\\HTML\\nodejs\\myapp\\DB
 let users = app.getUsers();
 /* GET users listing. */
 router.get('/', (req, res) => {
-  console.log(app.getUserCounter());
-  res.send(app.getUsers());
+  res.sendFile('C:\\Users\\asas9\\OneDrive\\바탕 화면\\HTML\\nodejs\\myapp\\views\\login.html');
 });
 
 router.get('/:id', (req, res) => {
@@ -27,24 +26,28 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
   const body = req.body;
 
-  if(!body.name){
-      return res.status(400).send('pls send a name.');
+  if(!body.userName){
+    return res.status(400).send('pls send a name.');
   }
-  else if(!body.region){
-      return res.status(400).send('pls send a region.');
+  else if(!body.userId){
+    return res.status(400).send('pls send a ID');
+  }
+  else if(!body.userPassword){
+    return res.status(400).send('pls send a password')
   }
   
-  const name = body.name;
-  const region = body.region;
+  const name = body.userName;
+  const ID = body.userId;
+  const PW = body.userPassword;
 
   const data = {
-      id: app.getUserCounter(1),
-      name: name,
-      region: region
+    name: name,
+    id: ID,
+    password: PW
   }
   console.log(data);
   app.pushUser(data);
-  res.send(data);
+  res.send(app.getUsers());
 });
 
 router.put('/:id', (req, res) => {
