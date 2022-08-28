@@ -1,0 +1,16 @@
+@charset "utf-8";
+
+header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+#Interface {
+    width: 200px; 
+    height: 300px; 
+    margin: 0 auto;
+    list-style: none;
+}
+button {
+    margin: 5px;
+    color: red;
+}

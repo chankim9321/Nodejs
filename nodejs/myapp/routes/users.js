@@ -2,25 +2,14 @@ var express = require('express');
 var router = express.Router();
 var app = require('../app');
 var dm = require('../dataManager');
-
 var DBpath = 'C:\\Users\\asas9\\OneDrive\\바탕 화면\\HTML\\nodejs\\myapp\\DB.json';
+
+//router.use(express.static('public'));
 
 let users = app.getUsers();
 /* GET users listing. */
 router.get('/', (req, res) => {
-  res.sendFile('C:\\Users\\asas9\\OneDrive\\바탕 화면\\HTML\\nodejs\\myapp\\views\\login.html');
-});
-
-router.get('/:id', (req, res) => {
-  const id = req.params.id;
-  // data searching
-  const filtered = app.getUsers().filter((user) => user.id == id);
-  if(filtered.length > 0){ 
-      res.send(filtered[0]);
-  }
-  else{
-      res.status(404).send('DATA NOT FOUND');
-  }
+  res.render('login.html');
 });
 
 router.post('/', (req, res) => {
@@ -48,6 +37,18 @@ router.post('/', (req, res) => {
   console.log(data);
   app.pushUser(data);
   res.send(app.getUsers());
+});
+
+router.get('/:id', (req, res) => {
+  const id = req.params.id;
+  // data searching
+  const filtered = app.getUsers().filter((user) => user.id == id);
+  if(filtered.length > 0){ 
+      res.send(filtered[0]);
+  }
+  else{
+      res.status(404).send('DATA NOT FOUND');
+  }
 });
 
 router.put('/:id', (req, res) => {
